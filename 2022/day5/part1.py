@@ -1,6 +1,6 @@
 fileName = "input.txt"
 
-
+# parcing cmd takes a input [mov 2 form 1 to 4] removes all the words and return that number arranged 
 def parse_cmd(line):
     line = line.replace("move","").replace("from","").replace("to","").strip()
     output = []
@@ -9,12 +9,16 @@ def parse_cmd(line):
         if val != "" and val != "\n":
             output.append(int(val))
     return output
+
+# takes a lvl str and return a array containing all the crates by lvl
 def parse_crate_str(crate):
     output = []
     for i in range(0,len(crate) // 4):
         output.append(crate[i * 4:(i + 1)* 4].strip().replace("[","").replace("]",""))
 
     return output
+
+# takes the lvl by lvl arragment and returns corrent colon
 def arrange_crates(crates):
     output = [ [] for i in range(len(crates[0]))]
     for j in range(len(crates)):
