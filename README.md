@@ -1,2 +1,2 @@
-# Advet of Code 2022
-trying out advent of code for the first time
+# Advent of Code 
+A place to put my advent of solutions
