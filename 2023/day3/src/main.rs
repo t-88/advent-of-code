@@ -99,9 +99,113 @@ fn part1() {
     println!("sum: {}",sum);
 
 }
+
+
+
+fn part2() {
+    let content = fs::read_to_string("src/input.txt").unwrap();
+
+    let lines : Vec<&str> = content.split("\n").collect();
     
+    let width = lines[0].len();
+    let height = lines.len();
+
+
+    let mut nums : HashMap<u32,String> = HashMap::new();
+
+    for j in 0..lines.len() {
+        let mut i = 0;
+        let line = lines[j]; 
+        while i < line.len() {
+            let chr = line.chars().nth(i).unwrap();
+            i += 1;
+            if chr.is_numeric() {
+                let start = i - 1;
+                
+                let mut number : String = String::new();
+                number.push(chr);
+                while i < width && line.chars().nth(i).unwrap().is_numeric() {
+                    number.push(line.chars().nth(i).unwrap());
+                    i += 1;
+                }
+                nums.insert((j * width + start) as u32,   number.clone());
+                nums.insert((j * width + start + number.len() - 1) as u32, number.clone());
+            }
+        }
+    }
+
+    let mut sum = 0;
+
+    for j in 0..lines.len() {
+        for (idx,chr) in lines[j].chars().enumerate() {
+            if chr == '*'  {
+                let mut ratios : Vec<u32> = vec![];
+
+                if idx > 0 {
+                    let val = get_number(&mut nums,(idx + j * width - 1) as u32);
+                    if val != 0 {
+                        ratios.push(val);    
+                    }
+                }
+                if idx < width {
+                    let val = get_number(&mut nums,(idx + j * width + 1) as u32);
+                    if val != 0 {
+                        ratios.push(val); 
+                    }
+                }
+                if j > 0 {
+                    let val = get_number(&mut nums,(idx + (j - 1) * width) as u32);
+                    if val != 0 {
+                        ratios.push(val);
+                    }
+                    if idx > 0 { 
+                        let val = get_number(&mut nums,(idx + (j - 1) * width - 1) as u32); 
+                        if val != 0 {
+                                ratios.push(val);
+                        }
+                    }
+                    if idx < width { 
+                        let val = get_number(&mut nums,(idx + (j - 1) * width + 1) as u32); 
+                        if val != 0 {
+                                ratios.push(val);
+                        }
+                    }
+                    
+                }
+                if j < height {
+                    let val = get_number(&mut nums,(idx + (j + 1) * width) as u32);
+                    if val != 0 {
+                        ratios.push(val);
+                    }
+                    if idx > 0 {
+                        let val = get_number(&mut nums,(idx + (j + 1) * width - 1) as u32); 
+                        if val != 0 {
+                                ratios.push(val);
+                        }
+                    }
+                    if idx < width {
+                        let val = get_number(&mut nums,(idx + (j + 1) * width + 1) as u32); 
+                        if val != 0 {
+                                ratios.push(val);
+                        }
+                    }
+                }
+                
+                if count == 2 {
+                    sum += ratios[0] * ratios[1]; 
+                }
+
+            }
+        }
+    }
+
+    println!("{}",sum);
+
+
+
+} 
 
 fn main() {
-    part1()
+    part2()
 
 }
