@@ -191,9 +191,7 @@ fn part2() {
                     }
                 }
                 
-                if count == 2 {
                     sum += ratios[0] * ratios[1]; 
-                }
 
             }
         }
